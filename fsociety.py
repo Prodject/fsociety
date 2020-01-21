@@ -82,8 +82,9 @@ config.read(configFile)
 toolDir = installDir + config.get('fsociety', 'toolDir')
 logDir = installDir + config.get('fsociety', 'logDir')
 yes = config.get('fsociety', 'yes').split()
-
-fsocietylogo = color.END + '''
+color_random=[color.HEADER,color.IMPORTANT,color.NOTICE,color.OKBLUE,color.OKGREEN,color.WARNING,color.RED,color.END,color.UNDERLINE,color.LOGGING]
+random.shuffle(color_random)
+fsocietylogo = color_random[0] + '''
         d88888b .d8888.  .d88b.   .o88b. d888888b d88888b d888888b db    db
         88'     88'  YP .8P  Y8. d8P  Y8   `88'   88         88    `8b  d8'
         88ooo   `8bo.   88    88 8P         88    88ooooo    88     `8bd8'
@@ -106,6 +107,25 @@ designed to interrupt, destroy or limit the functionality of any
 computer software or hardware or telecommunications equipment;
 ''' + color.END
 
+mrrobot4 = color.NOTICE + '''
+Hello,
+
+As we all know, Mr. Robot 4.0 is comming out - the end of Mr. Robot.
+
+We will update to python3.7 & add all of the new hacking tool of 4.0 later this year
+There will be no more updates after the show is done.
+This is to keep cannon to the show.))
+
+Thank you for all the sourport over the years, the fsociety team thanks you!
+Feel free to join the NEW DISCORD!!!
+Anything Mr. Robot will be on the server!
+
+[ https://discord.gg/xB87X9z ]
+
+
+
+Thanks for reading,
+Zachary, CRO-THEHACKER - Dev'''
 
 '''
 Starts Menu Classes
@@ -114,6 +134,7 @@ def agreement():
     while not config.getboolean("fsociety", "agreement"):
         clearScr()
         print(termsAndConditions)
+        print(mrrobot4)
         agree = raw_input("You must agree to our terms and conditions first (Y/n) ").lower()
         if agree in yes:
             config.set('fsociety', 'agreement', 'true')
@@ -498,7 +519,7 @@ class setoolkit:
             python-pymssql build-essential python-pexpect python-pefile python-crypto python-openssl")
         os.system("git clone --depth=1 %s %s" %
                   (self.gitRepo, self.installDir))
-        os.system("python %s/setup.py install" % self.installDir)
+        os.system("cd %s && python setup.py install" % self.installDir)
 
     def run(self):
         os.system("setoolkit")
@@ -1133,8 +1154,8 @@ def wppluginscan():
             conn = httplib.HTTPConnection(site)
             conn.request('HEAD', "/wp-content/plugins/" + dir)
             resp = conn.getresponse().status
-        except(), message:
-            print "Cant Connect:", message
+        except Exception as message:
+            print("Cant Connect:" + message) 
             pass
 
     def timer():
@@ -1150,10 +1171,10 @@ def wppluginscan():
             plugin = plugin.rstrip()
             scan(site, plugin)
             if resp not in Notfound:
-                print "+----------------------------------------+"
-                print "| current site:" + site
-                print "| Found Plugin: " + plugin
-                print "| Result:", resp
+                print("+----------------------------------------+")
+                print("| current site:" + site)
+                print("| Found Plugin: " + plugin)
+                print("| Result:", resp)
 
 
 def sqlmap():
@@ -1202,8 +1223,7 @@ def shelltarget():
 
 def poet():
     print("POET is a simple POst-Exploitation Tool.\n")
-    choicepoet = yesOrNo()
-    if choicepoet in yes:
+    if yesOrNo():
         os.system("git clone --depth=1 https://github.com/mossberg/poet.git")
         os.system("python poet/server.py")
     else:
@@ -1667,31 +1687,31 @@ class Fscan:
                 pass
 
 
-def portScanner(self, mode, ran):
-    '''
-    simple port scanner works with range of ports
-    or with common ports (al-swisre idea)
-    '''
-    clearScr()
-    print "[~] Scanning Ports"
+    def portScanner(self, mode, ran):
+        '''
+        simple port scanner works with range of ports
+        or with common ports (al-swisre idea)
+        '''
+        clearScr()
+        print "[~] Scanning Ports"
 
-    def do_it(ip, port):
-        sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        if mode == 1:
+            a = ran.split('-')
+            start = int(a[0])
+            end = int(a[1])
+            for i in range(start, end):
+                do_it(self.serverip, i)
+        elif mode == 2:
+            for port in [80, 21, 22, 2082, 25, 53, 110, 443, 143]:
+                do_it(self.serverip, port)
 
-        sock = sock.connect_ex((ip, port))
-        if sock == 0:
-            print " [*] Port %i is open" % port
 
-    if mode == 1:
-        a = ran.split('-')
-        start = int(a[0])
-        end = int(a[1])
-        for i in range(start, end):
-            do_it(self.serverip, i)
-    elif mode == 2:
-        for port in [80, 21, 22, 2082, 25, 53, 110, 443, 143]:
+def do_it(ip, port):
+    sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
-            do_it(self.serverip, port)
+    sock = sock.connect_ex((ip, port))
+    if sock == 0:
+        print " [*] Port %i is open" % port
 
 
 ############################
